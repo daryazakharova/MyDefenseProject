@@ -1,0 +1,36 @@
+﻿@page "/adminAccount"
+@attribute [Authorize(Roles = "Administrator")]
+
+<div class="row">
+    <h4>Выберите действие:</h4>
+</div>
+<div class="col">
+    <button type="button" @onclick="OnClick" class="buttonStyle">Добавление товара</button>
+
+    <button type="button" @onclick="OnClick1" class="buttonStyle">Редактирование товара</button>
+
+    <button type="button" @onclick="OnClick2" class="buttonStyle">Удаление товара</button>
+</div>
+<br />
+ @if (addition)
+{
+    <div class="row">
+        <LoadingProduct />
+    </div>
+}
+@if (editing)
+{
+    <div class="row">
+    todo component editing
+
+    </div>
+}
+@if (delete)
+{
+    <div class="row">
+        todo component delete
+
+    </div>
+}
+
+

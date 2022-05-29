@@ -1,0 +1,55 @@
+﻿@using DefensiveProject.Components
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
+<div class="row">
+    <div class="col text-center">
+        <img src="./Images/hanger1.jpg" class="general-image " />
+    </div>
+    <div class="col-9 pt-4 text-center">
+        <AuthorizeView>
+            <Authorized>
+                <h2> Здравствуй, @context.User.Identity.Name! </h2>
+            </Authorized>
+            <NotAuthorized>
+                <h2>Здравствуй, гость!</h2>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+    <div class="col pt-3">
+        <AuthorizeView>
+            <NotAuthorized>
+                <NavLink href=""><button class="btn-top btn-lg"><i class="fa fa-bars"></i></button></NavLink>
+                <TooltipUser><button class="btn-top btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"><i class="fa-solid fa-user"></i></button></TooltipUser>
+                <NavLink href="basket"><button class="btn-top btn-lg"><i class="fa-solid fa-bucket"></i></button></NavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrator">
+            <Authorized>
+                <NavLink href=""><button class="btn-top btn-lg"><i class="fa fa-bars"></i></button></NavLink>
+                <NavLink href="adminAccount"> <button class="btn-top btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"><i class="fa-solid fa-user"></i></button></NavLink>
+                <button class="btn-top btn-lg" @onclick="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="User">
+            <Authorized>
+                <NavLink href=""><button class="btn-top btn-lg"><i class="fa fa-bars"></i></button></NavLink>
+                <NavLink href="usAccount"> <button class="btn-top btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"><i class="fa-solid fa-user"></i></button></NavLink>
+                <NavLink href="basket"><button class="btn-top btn-lg"><i class="fa-solid fa-bucket"></i></button></NavLink>
+                <button class="btn-top btn-lg" @onclick="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
+
+
+
+
+@code {
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (SettingAuthentication)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/", true);
+    }
+}

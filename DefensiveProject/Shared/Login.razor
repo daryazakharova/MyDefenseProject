@@ -1,0 +1,40 @@
+﻿@using DefensiveProject.Authentication
+@inject UserAccount userAccount
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
+@if (isLogin)
+{
+    <div class="modal-backdrop show border-radius:25px;  border:2px solid black;"></div>
+    <div class="modal fade show" id="autorizModal" tabindex="-1" role="dialog"
+     aria-labelledby="autorizModal" aria-hidden="true" style="display:block">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title ">Авторизация</h3>
+                    <button @onclick="onCancel" type="button " class="close "><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <label for="login"><b>Login</b></label>
+                    <br />
+                    <input type="text" @bind="NameLogin" placeholder="Введите логин" name="login" />
+                    <br />
+                    <label for="psw"><b>Password</b></label>
+                    <br />
+                    <input type="password" @bind="Password" placeholder="Введите пароль" name="psw" />
+                    <tr>
+                        <td><h5>@message</h5></td>
+                    </tr>
+                    <button class="registerbtn" @onclick="Authenticate" type="submit" href="personalArea">Войти</button>
+                </div>
+                <div class="container signin ">
+                    <p>Забыли <a href="#">пароль</a>?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+

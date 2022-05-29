@@ -1,0 +1,73 @@
+﻿<div class="col-6">
+<EditForm Model="Creation" OnValidSubmit="AddNewProduct">
+      <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Название товара:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="Creation.Name" />
+                 </div>
+    </div>  
+    <div class="form-group">
+        <label>Половой признак:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="Creation.Name" />
+                 </div>
+    </div>
+    <div class="form-group">
+        <label>Категория:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="Creation.Category" />
+                 </div>
+    </div>
+    <div class="form-group">
+        <label>Цена:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="Creation.Price" />
+              </div>
+    </div> 
+   @* сделать загрузка картинки*@
+    @* <InputImage Label="Image" OnImageFileSelected="ImageFileSelectedHandler" ImageUrl="@imageUrl"></InputImage>*@
+ <div class="form-group">
+        <label>Описание товара:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="Creation.Description" />
+        </div>
+    </div> 
+    <button type="submit" @onclick="AddNewProduct" class="buttonStyle">Добавить новый товар</button>
+</EditForm>
+</div>
+     
+
+@code {
+    
+    private UnitOfGoods Creation;
+    protected override void OnInitialized()
+    {
+        Creation = new UnitOfGoods();
+    }
+    void AddNewProduct()
+    {
+        //добавлние в базу данных товара
+    }
+
+
+    //string imageUrl;
+    //protected override void OnInitialized()
+    //{
+    //    imageUrl = Creation.Image;
+    //    Creation.Image = null;
+    //}
+
+    //void ImageFileSelectedHandler(string imageBase64)
+    //{
+    //    //Обработчик выбора файла изображения
+
+    //}
+   
+}
+
+  
+    
+   
+
+   

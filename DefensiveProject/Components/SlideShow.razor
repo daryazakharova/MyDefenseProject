@@ -1,0 +1,30 @@
+﻿@inject IJSRuntime JSRuntime
+
+ <div id="@carouselSlides" class="carousel slide" data-bs-ride="carousel" data-bs-wrap="true" data-bs-interval="2000" data-bs-pause="false" >
+  <div class="carousel-inner" >
+      
+ <div class="carousel-item active">
+      <img src="./Images/1.jpg" class="d-block w-100" alt="image1">
+    
+   
+   
+     
+    </div>
+    <div class="carousel-item">
+      <img src="./Images/2.jpg" class="d-block w-100" alt="image2">
+    </div>
+    <div class="carousel-item">
+      <img src="./Images/3.jpg" class="d-block w-100" alt="image3" >
+    </div>
+  </div>
+</div>
+
+@code{
+    const string carouselSlides = "carouselName";
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		object[] args = { carouselSlides };
+		await JSRuntime.InvokeVoidAsync("startCarousel", args); 
+	}
+}

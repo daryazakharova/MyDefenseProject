@@ -1,0 +1,66 @@
+﻿.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+  
+}
+
+#spanText {
+    visibility: hidden;
+    position: absolute;
+    width: 300px;
+    top: 100%;
+    right: 1%;
+    margin-left: -60px;
+    background-color: #fff;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #c7c2c2;
+    z-index: 1;
+}
+    #spanText::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        right: 5%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #fff transparent transparent transparent;
+    }
+
+.tooltip-wrapper:hover #spanText {
+    visibility: visible;
+}
+
+.buttonStyle {
+    background-color: #5eacee;
+    color: white;
+    padding: 6px 20px;
+    margin: 8px 0;
+    border-radius: 25px;
+    border: none;
+}
+
+    .buttonStyle:focus {
+        outline: none;
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+
+.buttonStyle2 {
+    background-color: #ddd;
+    color: #808080;
+    padding: 6px 20px;
+    margin: 8px 0;
+    border-radius: 25px;
+    border: none;
+}
+
+    .buttonStyle2:focus {
+        outline: none;
+        transform: scale(1.1);
+        cursor: pointer;
+    }

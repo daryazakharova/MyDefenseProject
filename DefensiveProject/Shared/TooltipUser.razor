@@ -1,0 +1,29 @@
+﻿
+<div class="tooltip-wrapper">
+    <span id="spanText">
+        У вас уже создан аккаунт?
+        <br />
+        <br />
+        <button type="button" @onclick="OnClick" class="buttonStyle2 ">Создать аккаунт</button>
+        <Register @ref="register" onCancel="OnClose"></Register>
+        <button type="button" @onclick="OnClick2" class="buttonStyle ">Войти</button>
+        <Login @ref="login" onCancel="OnClose2"></Login>
+    </span>
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    Register register;
+    void OnClick() => register.Show();
+    void OnClose() => register.Hide();
+    Login login;
+    void OnClick2() => login.Show();
+    void OnClose2() => login.Hide();
+
+
+
+
+
+
+}
