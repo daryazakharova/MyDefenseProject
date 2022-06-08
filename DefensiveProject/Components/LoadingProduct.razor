@@ -1,73 +1,169 @@
-﻿<div class="col-6">
-<EditForm Model="Creation" OnValidSubmit="AddNewProduct">
-      <DataAnnotationsValidator />
-    <div class="form-group">
-        <label>Название товара:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="Creation.Name" />
-                 </div>
-    </div>  
-    <div class="form-group">
-        <label>Половой признак:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="Creation.Name" />
-                 </div>
-    </div>
-    <div class="form-group">
-        <label>Категория:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="Creation.Category" />
-                 </div>
-    </div>
-    <div class="form-group">
-        <label>Цена:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="Creation.Price" />
-              </div>
-    </div> 
-   @* сделать загрузка картинки*@
-    @* <InputImage Label="Image" OnImageFileSelected="ImageFileSelectedHandler" ImageUrl="@imageUrl"></InputImage>*@
- <div class="form-group">
-        <label>Описание товара:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="Creation.Description" />
+﻿@inject IJSRuntime js
+<div class="row-6">
+    <div class="col-6">
+        <div class="form-group">
+            <input class="artInput" @bind-value="ArticlePr" />
+            <button type="submit" @onclick="CreatArticle" class="buttonStyle">Сгенерировать артикул</button>
         </div>
-    </div> 
-    <button type="submit" @onclick="AddNewProduct" class="buttonStyle">Добавить новый товар</button>
-</EditForm>
+    </div>
+    <div class="row-6">
+        <div class="col-6">
+            <div class="form-group">
+                <label>Добавить фото:</label>
+                <InputFile OnChange="@LoadFiles" multiple />
+                <br />
+                <br />
+                <img src="@imgSrc" width="200" height="200" />
+            </div>
+            <br />
+            <div class="form-group">
+                <label>Название товара:</label>
+                <div>
+                    <input type="text" @bind-value="Name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Половой признак:</label>
+                <div>
+                    <input type="text" @bind-value="Gender" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Категория:</label>
+                <div>
+                    <input type="text" @bind-value="Category" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Цена:</label>
+                <div>
+                    <input type="text" @bind-value="Price" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Наличие на складе в размере 104:</label>
+                <div>
+                    <input type="text" @bind-value="size104" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Наличие на складе в размере 110:</label>
+                <div>
+                    <input type="text" @bind-value="size110" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Наличие на складе в размере 116:</label>
+                <div>
+                    <input type="text" @bind-value="size116" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Наличие на складе в размере 128:</label>
+                <div>
+                    <input type="text" @bind-value="size128" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Описание товара:</label>
+                <div>
+                    <input type="text" @bind-value="Description" />
+                </div>
+            </div>
+            <button type="submit" @onclick="AddNewProduct" class="buttonStyle">Добавить новый товар</button>
+            <label>@Message</label>
+        </div>
+    </div>
 </div>
-     
+
+
+
 
 @code {
-    
-    private UnitOfGoods Creation;
-    protected override void OnInitialized()
+
+    private string Name = string.Empty;
+    private string Gender = string.Empty;
+    private string Category = string.Empty;
+    private int Price;
+    private string Description = string.Empty;
+    private string Message = string.Empty;
+    private string imgSrc = string.Empty;
+    private byte[] Photo;
+    private int ArticlePr;
+    private int size104;
+    private int size110;
+    private int size116;
+    private int size128;
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 512000;
+    private bool isLoading;
+    protected byte[] img;
+    private int Value;
+    Article article = new Article();
+    UnitOfGoods product = new UnitOfGoods();
+    private void CreatArticle()
     {
-        Creation = new UnitOfGoods();
+        //Article.AddArticle(new Article("Артикул", 123));
+        article = Article.GetArticle("Артикул");
+        Value = article.Value;
+        Value++;
+        Article.ReplaceArticle("Артикул", new Article("Артикул", Value));
+        ArticlePr = article.Value;
     }
-    void AddNewProduct()
+    private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-        //добавлние в базу данных товара
+        isLoading = true;
+        loadedFiles.Clear();
+
+        foreach (var file in e.GetMultipleFiles())
+        {
+            try
+            {
+                loadedFiles.Add(file);
+                var stream = file.OpenReadStream(maxFileSize);
+                img = new byte[stream.Length];
+                await stream.ReadAsync(img);
+                isLoading = false;
+                product.Photo = img;
+                imgSrc = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(img));
+            }
+            catch (Exception ex)
+            {
+                await js.InvokeVoidAsync("logError", ex);
+            }
+        }
     }
 
+    private void AddNewProduct()
+    {
+        UnitOfGoods.AddMongoDB(new UnitOfGoods(ArticlePr, Name, Gender, Category, Price, size104, size110, size116, size128, img, Description));
+        Clear();
+        Message = "Товар успешно добавлен!";
+        //if (Name == string.Empty || Gender == string.Empty || Category == string.Empty || Price ==0 || Description == string.Empty || ArticlePr==0 || img==null)
+        //{
+        //    Message = "Необходимо заполнить все поля!";
+        //}
+    }
 
-    //string imageUrl;
-    //protected override void OnInitialized()
-    //{
-    //    imageUrl = Creation.Image;
-    //    Creation.Image = null;
-    //}
+    private void Clear()
+    {
+        Name = string.Empty;
+        Gender = string.Empty;
+        Category = string.Empty;
+        Price = 0;
+        Description = string.Empty;
+        imgSrc = string.Empty;
+        ArticlePr = 0;
+        size104 = 0;
+        size110 = 0;
+        size116 = 0;
+        size128 = 0;
+    }
 
-    //void ImageFileSelectedHandler(string imageBase64)
-    //{
-    //    //Обработчик выбора файла изображения
-
-    //}
-   
 }
 
-  
-    
-   
 
-   
+
+
+
+

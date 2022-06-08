@@ -1,0 +1,57 @@
+﻿@page "/179"
+<div class="row">
+   <p><a href="">Главная страница</a>> <a href="catalogBoy">Каталог мальчики</a>> @product.Name</p>
+</div>
+ 
+<div class="row">
+    <div class="col">
+</div>
+<div class="col-9 pt-4 text-center">
+    <div class="floating-box">
+        <div class="row">
+        <div class="col text-center">
+            <img class="icon" src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(product.Photo))">
+        </div>
+        <div class="col-7 pt-3">
+            <h5><i>@product.Name</i></h5>
+            <h6><i>@product.Price р.</i></h6>            
+            <hr />
+            <button class="basket2">104</button>
+            <button class="basket2">110</button>
+            <button class="basket2">116</button>
+            <button class="basket2">128</button>
+            <h6><i>Артикул: @product.ArticleProduct</i></h6>
+            <h6><i>Описание: @product.Description</i></h6>
+            <br/>
+            <button class="basket"><i class="fa-solid fa-bucket"></i> В корзину</button>
+
+        </div>
+        </div>
+    </div>
+</div>
+ <div class="col">
+</div>
+</div>
+
+
+@code {
+    private int ArticlePr = 179;
+    private string Gender = "Мальчик";
+    private string Category = "Футболки и лонгсливы";
+    private string Name = string.Empty;
+    private int Price;
+    private string Description = string.Empty;
+    UnitOfGoods product = new UnitOfGoods();
+    protected override void OnInitialized()
+    {
+        product = UnitOfGoods.GetArticleClothes(ArticlePr);
+    }
+
+    private void AddToBasket()
+    {
+//добавить в список корзины и записать в базу данных(отложенные и покупка)
+    }
+
+
+
+}

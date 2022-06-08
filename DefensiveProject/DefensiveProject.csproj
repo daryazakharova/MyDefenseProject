@@ -15,4 +15,6 @@
     <PackageReference Include="popper.js" Version="1.16.1" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

@@ -15,13 +15,13 @@
                 <h2>Здравствуй, гость!</h2>
             </NotAuthorized>
         </AuthorizeView>
-    </div>
+    </div> 
     <div class="col pt-3">
         <AuthorizeView>
             <NotAuthorized>
                 <NavLink href=""><button class="btn-top btn-lg"><i class="fa fa-bars"></i></button></NavLink>
                 <TooltipUser><button class="btn-top btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"><i class="fa-solid fa-user"></i></button></TooltipUser>
-                <NavLink href="basket"><button class="btn-top btn-lg"><i class="fa-solid fa-bucket"></i></button></NavLink>
+                <NavLink href="basket"><button class="btn-top btn-lg"><i class="fa-solid fa-basket-shopping"></i></button></NavLink>
             </NotAuthorized>
         </AuthorizeView>
         <AuthorizeView Roles="Administrator">
@@ -31,7 +31,7 @@
                 <button class="btn-top btn-lg" @onclick="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
             </Authorized>
         </AuthorizeView>
-        <AuthorizeView Roles="User">
+        <AuthorizeView Roles="Client">
             <Authorized>
                 <NavLink href=""><button class="btn-top btn-lg"><i class="fa fa-bars"></i></button></NavLink>
                 <NavLink href="usAccount"> <button class="btn-top btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"><i class="fa-solid fa-user"></i></button></NavLink>

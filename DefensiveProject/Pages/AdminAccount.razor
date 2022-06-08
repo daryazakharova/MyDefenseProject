@@ -2,7 +2,7 @@
 @attribute [Authorize(Roles = "Administrator")]
 
 <div class="row">
-    <h4>Выберите действие:</h4>
+    <h4>Выберите действие:</h4> 
 </div>
 <div class="col">
     <button type="button" @onclick="OnClick" class="buttonStyle">Добавление товара</button>
@@ -21,15 +21,13 @@
 @if (editing)
 {
     <div class="row">
-    todo component editing
-
+   <EditingProduct />
     </div>
 }
 @if (delete)
 {
     <div class="row">
-        todo component delete
-
+        <DeletingProduct />
     </div>
 }
 

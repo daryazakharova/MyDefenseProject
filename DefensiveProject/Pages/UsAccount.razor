@@ -1,9 +1,23 @@
 ﻿@page "/usAccount"
-@attribute [Authorize(Roles ="User")]
+@attribute [Authorize(Roles = "Client")] 
 
-<h3>UsAccount</h3>
+<h5>Личный кабинет</h5>
+<div class="form-group">
+    <label>Логин/Имя: </label>
+</div>
+<div class="form-group">
+    <label>E-mail:</label>
+    <input type="text" />
+</div>
+<div class="form-group">
+    <label>Номер телефона:</label>
+    <input type="text" />
+</div>
+<button >Сохранить изменения</button> 
+<NavLink href="basket"><button><i class="fa-solid fa-basket-shopping"></i> Корзина</button></NavLink>
+<NavLink href="userShopping"><button><i class="fa-solid fa-bag-shopping"></i> Покупки</button></NavLink>
 
 @code {
-
-
+    
+   
 }

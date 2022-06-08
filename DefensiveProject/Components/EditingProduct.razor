@@ -1,5 +1,192 @@
-﻿<h3>EditingProduct</h3>
+﻿@inject IJSRuntime js
+<div class="row-6">
+    <div class="col-6">
+<div class="form-group">
+    <label>Введите номер артикла товара:</label>
+    <div>
+        <input class="edInput" @bind-value="ArticlePr" />
+           <button class="buttonStyle" @onclick="Get">Найти</button>
+    </div>
+    <label>@Message1</label>
+</div>
+</div>
+</div>
+<br/>
+<br/>
+<br/>
+
+<div class="col-6">
+    <div class="form-group">
+         <h4>Редактирование товара</h4>
+        <label>Фото:</label>
+        <div>
+            Изменить фото:
+           <InputFile OnChange="@LoadFiles2" multiple />
+        </div>
+        <br/>
+        <div class="col-md-6">
+           <img src="@imgSrc" width="200" height="200" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Название товара:</label>
+        <div>
+            <input type="text" @bind-value="Name" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Половой признак:</label>
+        <div>
+            <input type="text" @bind-value="Gender" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Категория:</label>
+        <div>
+            <input type="text" @bind-value="Category" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Цена:</label>
+        <div>
+            <input type="text" @bind-value="Price" />
+        </div>
+    </div>
+     <div class="form-group">
+                <label>Наличие на складе в размере 104:</label>
+                <div>
+                    <input type="text" @bind-value="size104" />
+                </div>
+            </div>
+             <div class="form-group">
+                <label>Наличие на складе в размере 110:</label>
+                <div>
+                    <input type="text" @bind-value="size110" />
+                </div>
+            </div>
+             <div class="form-group">
+                <label>Наличие на складе в размере 116:</label>
+                <div>
+                    <input type="text" @bind-value="size116" />
+                </div>
+            </div>
+             <div class="form-group">
+                <label>Наличие на складе в размере 128:</label>
+                <div>
+                    <input type="text" @bind-value="size128" />
+                </div>
+            </div>
+    <div class="form-group">
+        <label>Описание товара:</label>
+        <div>
+            <input type="text" @bind-value="Description" />
+        </div>
+    </div>
+
+    <button type="submit" @onclick="Save" class="buttonStyle">Сохранить</button>
+           <label>@Message</label>
+   </div>
 
 @code {
+    private string Name = string.Empty;
+    private string Gender = string.Empty;
+    private string Category = string.Empty;
+    private int Price;
+    private string Description = string.Empty;
+    private string Message = string.Empty;
+    private string Message1 = string.Empty;
+    private string imgSrc = string.Empty;
+    private int ArticlePr;
+    private int size104;
+    private int size110;
+    private int size116;
+    private int size128;
+
+    public List<UnitOfGoods> products = new List<UnitOfGoods>();
+    UnitOfGoods product = new UnitOfGoods();
+
+    protected override void OnInitialized()
+    {
+        List<UnitOfGoods> products = UnitOfGoods.GetListDB();
+    }
+
+    private void Get()
+    {
+        product = UnitOfGoods.GetArticleClothes(ArticlePr);
+        if (product==null)
+        {
+            Message1 = "Такого артикла не существует!";
+        }
+        else
+        {
+        Name = product.Name;
+        Gender = product.Gender;
+        Category = product.Category;
+        Price = product.Price;
+        Description = product.Description;
+        size104 = product.Size104;
+        size110 = product.Size110;
+        size116 = product.Size116;
+        size128 = product.Size128;
+        imgSrc = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(product.Photo));  
+        }
+    }
+
+    private void Save()
+    {
+        UnitOfGoods.ReplaceToDataBase(ArticlePr, new UnitOfGoods(ArticlePr, Name, Gender, Category, Price, size104, size110, size116, size128, img, Description));
+        Message = "Товар успешно изменен!";
+         if (ArticlePr == 0)
+        {
+            Message = "Введите артикул товара!";
+        }
+        Clear();
+
+    }
+    private void Clear()
+    {
+        Name = string.Empty;
+        Gender = string.Empty;
+        Category = string.Empty;
+        Price=0;
+        Description = string.Empty;
+        imgSrc = string.Empty;
+        ArticlePr = 0;
+        size104 = 0;
+     size110 = 0;
+     size116 = 0;
+     size128 = 0;
+    }
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 500000;
+    private int maxAllowedFiles = 3;
+    private bool isLoading;
+    private byte[] img;
+
+    private async Task LoadFiles2(InputFileChangeEventArgs e)
+    {
+    isLoading = true;
+    loadedFiles.Clear();
+
+    foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+    {
+        try
+        {
+            loadedFiles.Add(file);
+            var stream = file.OpenReadStream(maxFileSize);
+            img = new byte[stream.Length];
+            await stream.ReadAsync(img);
+            isLoading = false;
+            product.Photo = img;
+            imgSrc = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(img));
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("logError", ex);
+        }
+    }
+    }
+
 
 }

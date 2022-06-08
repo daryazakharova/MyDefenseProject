@@ -44,9 +44,9 @@ namespace DefensiveProject.Shared
                     Role = userAccount.Role
                 });
                 navManager.NavigateTo("/", true);
-                NameLogin = string.Empty;
-                Password = string.Empty;
-                Hide();
+                //NameLogin = string.Empty;
+                //Password = string.Empty;
+                //Hide();
             }
 
         }

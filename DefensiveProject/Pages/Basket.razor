@@ -1,7 +1,67 @@
 ﻿@page "/basket"
-@attribute [Authorize(Roles ="User")]
-<h3>Basket</h3>
+@attribute [Authorize(Roles ="Client")]
+<div class="row">@Message
+    <a href="">Главная страница</a>
+</div>
+<h3>Basket</h3> 
+<div class="col-3 pt-4">
+   <h5><i>Корзина</i></h5> 
+   <button ><i class="fa-solid fa-right-from-bracket"></i>Очистить корзину</button>
+</div>
+<div class="col-9 pt-4">
+    <div class="floating-box">
+    <div class="col-3">
+ <img class="icon" src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(product.Photo))">
+    </div>
+    <div class="col-3">
+ <h5><i>@product.Name</i></h5>
+ <h6><i>Артикул: @product.ArticleProduct</i></h6>
+    </div>
+     <div class="col-3">
+ <h6><i>@product.Price р.</i></h6> 
+  <button ><i class="fa-solid fa-right-from-bracket"></i></button>
+   <div class="floating-box">
+         <button @onclick="OnClickMinus">-</button>
+       <label>@quantity</label>
+       <button @onclick="OnClickPlus">+</button>  
+       </div>
+    </div>
+</div>
+</div>
+<hr />
+<h5><i>Итого: </i></h5>
+ <button class="buttonbasket">Оплатить заказ</button>
 
 @code {
+    private int ArticlePr;
+    private int quantity=1;
+    private string Message = string.Empty;
+    UnitOfGoods product = new UnitOfGoods();
+    public List<UnitOfGoods> products = new List<UnitOfGoods>();
 
+    protected override void OnInitialized()
+    {
+        if(products==null)
+        {
+            Message = "Ваша корзина пуста!";
+        }
+       // products = BasketUser.GetCart();
+
+    }
+    private void OnClickMinus()
+    {
+        if (quantity==1)
+        {
+
+        }
+        quantity--;
+    }
+    private void OnClickPlus()
+    {
+        //if() если больше, чем наличии
+        //{
+            
+        //}
+        quantity++; 
+    }
 }
