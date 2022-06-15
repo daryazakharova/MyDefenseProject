@@ -26,6 +26,7 @@ namespace DefensiveProject.Pages
             editing = false;
             addition = false;
         }
+
     }
 }
 

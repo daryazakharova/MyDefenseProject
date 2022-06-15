@@ -6,7 +6,6 @@ namespace DefensiveProject.Data
 {
     public class BasketUser
     {
-       
         public double Currency { get; set; }
         public List<UnitOfGoods> ListInCart;
 

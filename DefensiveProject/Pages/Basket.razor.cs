@@ -49,7 +49,6 @@ namespace DefensiveProject.Pages
 
         private void Buying()
         {
-
             foreach (var item in products)
             {
                 user.Buy(item.ArticleProduct, item.size, item.quantity);

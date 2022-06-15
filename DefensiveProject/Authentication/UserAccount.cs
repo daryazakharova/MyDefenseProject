@@ -184,7 +184,6 @@ namespace DefensiveProject.Authentication
                 shoppingList.AddToShoppingList(current, Login);
             }
         }
-
         public static List<UserAccount> GetListUserDB(string name)
         {
             var client = new MongoClient("mongodb://localhost");

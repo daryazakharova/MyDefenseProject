@@ -23,7 +23,7 @@ namespace DefensiveProject.Data
             return client1.shoppingList;
         }
 
-        public static void UpdateShoppingList(UnitOfGoods unit, string login)//push - добавляем новый обект в список cart
+        public static void UpdateShoppingList(UnitOfGoods unit, string login)
         {
             var client = new MongoClient("mongodb://localhost");
             var database = client.GetDatabase("DefensiveProject");

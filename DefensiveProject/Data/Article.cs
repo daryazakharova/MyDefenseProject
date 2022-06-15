@@ -44,5 +44,6 @@ namespace DefensiveProject.Data
             var collection = database.GetCollection<Article>("Article");
             collection.ReplaceOne(x => x.Name == name, article);
         }
+
     }
 }

@@ -76,5 +76,6 @@ namespace DefensiveProject.Pages
             Message = string.Empty;
             onCancel();
         }
+
     }
 }

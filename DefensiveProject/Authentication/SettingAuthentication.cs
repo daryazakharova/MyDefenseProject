@@ -59,7 +59,6 @@ namespace DefensiveProject.Authentication
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
         }
 
-
     }
 }
     

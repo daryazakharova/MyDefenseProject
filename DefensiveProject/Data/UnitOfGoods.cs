@@ -26,7 +26,7 @@ namespace DefensiveProject.Data
         }
 
         public UnitOfGoods(int articleProduct,string name, string gender, string category, int price, int size104, int size110, int size116, int size128, byte[] photo, string description )
-        {//для добавления в бд товара, для каталога
+        {
             ArticleProduct = articleProduct;
             Name = name;
             Gender = gender;
@@ -41,7 +41,7 @@ namespace DefensiveProject.Data
         }
 
         public UnitOfGoods(string name, int price, int articleProduct, int size, int quantity)
-        { //для добавления в корзину
+        { 
             Name = name;
             Price = price;
             ArticleProduct = articleProduct;

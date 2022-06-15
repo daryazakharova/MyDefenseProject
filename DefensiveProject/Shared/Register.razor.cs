@@ -15,7 +15,6 @@ namespace DefensiveProject.Shared
         private string Message2 = string.Empty;
 
         UserAccount user;
-
         protected override void OnInitialized()
         {
             user = new UserAccount();
