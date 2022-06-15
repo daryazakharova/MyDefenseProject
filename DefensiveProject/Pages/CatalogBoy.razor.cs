@@ -13,6 +13,7 @@ namespace DefensiveProject.Pages
         private bool isModal = false;
         private string Message = string.Empty;
         private int Size;
+        private bool choice = false;
         UnitOfGoods product = new UnitOfGoods();
         public List<UnitOfGoods> products = new List<UnitOfGoods>();
         public List<UnitOfGoods> tShirtsLongsleeves = new List<UnitOfGoods>();
@@ -53,28 +54,39 @@ namespace DefensiveProject.Pages
         private void OnClick104()
         {
             Size = 104;
+            choice = true;
         }
         private void OnClick110()
         {
             Size = 110;
+            choice = true;
         }
         private void OnClick116()
         {
             Size = 116;
+            choice = true;
         }
         private void OnClick128()
         {
             Size = 128;
+            choice = true;
         }
         private void AddToBasket(int article)
         {
-            product = UnitOfGoods.GetArticleClothes(article);
-            UserAccount user = UserAccount.GetUserLogin(GetAuthorizedUser().GetAwaiter().GetResult().Login);
-            user.AddToBasket(product.Category, product.ArticleProduct, Size, product.quantity);
-            Message = "Товар добавлен в корзину!"; 
-            UserAccount.ReplaceUser(new UserAccount(user.Login,user.Email, user.Password, user.Role,user.NumberPhone, user.busketUser, user.shoppingList));
-            Message = string.Empty;
-            onCancel();
+            if(choice==true)
+            {
+                product = UnitOfGoods.GetArticleClothes(article);
+                UserAccount user = UserAccount.GetUserLogin(GetAuthorizedUser().GetAwaiter().GetResult().Login);
+                user.AddToBasket(product.Category, product.ArticleProduct, Size, product.quantity);
+                Message = "Товар добавлен в корзину!";
+                UserAccount.ReplaceUser(new UserAccount(user.Login, user.Email, user.Password, user.Role, user.NumberPhone, user.busketUser, user.shoppingList));
+                Message = string.Empty;
+                onCancel();
+            }
+            else
+            {
+                Message = "Пожалуйста, выберите размер!";
+            }
         }
 
     }

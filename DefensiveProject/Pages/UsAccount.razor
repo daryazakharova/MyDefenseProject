@@ -9,16 +9,16 @@
             <div class="col-6">
                 <div class="floating-box">
                     <div class="form-group">
-                        <label>E-mail: <i>@GetAuthorizedUser().GetAwaiter().GetResult().Email</i></label>
+                        <label>E-mail: <i>@user.Email</i></label>
                     </div>
                     <div class="form-group">
-                        <label>Логин/Имя: <i>@GetAuthorizedUser().GetAwaiter().GetResult().Login</i> </label>
+                        <label>Логин/Имя: <i>@user.Login</i> </label>
                     </div>
                     <div class="form-group">
-                        <label>Номер телефона: <i>@GetAuthorizedUser().GetAwaiter().GetResult().NumberPhone</i></label>
+                        <label>Номер телефона: <i>@user.NumberPhone</i></label>
 
                         <div class="row">
-                            <input type="text" @bind-value="NumberPhone" placeholder="Изменить номер телефона" />
+                            <input type="text" @bind-value="numberPhone" placeholder="Изменить номер телефона" />
 
                             <button class="registerbtn" @onclick="ReplasePhoneUser">Сохранить</button>
                         </div>
@@ -35,9 +35,8 @@
 @code {
     [CascadingParameter]
     private Task<AuthenticationState> authenticationState { get; set; }
-    private string NumberPhone;
-    private string Login;
-
+    private string numberPhone;
+    UserAccount user = new UserAccount();
 
     private async Task<UserAccount> GetAuthorizedUser()
     {
@@ -46,11 +45,15 @@
         UserAccount authorizedUser = UserAccount.GetUserLogin(userName);
         return authorizedUser;
     }
+     protected override void OnInitialized()
+        {
+            user = UserAccount.GetUserLogin(GetAuthorizedUser().GetAwaiter().GetResult().Login);
 
+        }
     private void ReplasePhoneUser()
     {
-        UserAccount.ReplaceUserToDataBase(GetAuthorizedUser().GetAwaiter().GetResult().Email, new UserAccount(GetAuthorizedUser().GetAwaiter().GetResult().Login, GetAuthorizedUser().GetAwaiter().GetResult().Email, GetAuthorizedUser().GetAwaiter().GetResult().Password, GetAuthorizedUser().GetAwaiter().GetResult().Role, NumberPhone));
+        UserAccount.ReplaceUserToDataBase(user.Email, new UserAccount(user.Login, user.Email, user.Password, user.Role, numberPhone, user.busketUser, user.shoppingList));
+        user = UserAccount.GetUserLogin(GetAuthorizedUser().GetAwaiter().GetResult().Login);
     }
-
 
 }

@@ -32,7 +32,7 @@ namespace DefensiveProject.Pages
             {
                 product = products.Find(x => x.ArticleProduct == article);
                 user.DeleteOneBasket(product.ArticleProduct, product.size, user.Login);
-                UserAccount.ReplaceUser(new UserAccount(user.Login, user.Email, user.Password, user.Role, user.NumberPhone, user.busketUser));
+                UserAccount.ReplaceUser(new UserAccount(user.Login, user.Email, user.Password, user.Role, user.NumberPhone, user.busketUser, user.shoppingList));
                 products = BasketUser.GetCart(user.Login).ListInCart;
                 Currency = BasketUser.GetCart(user.Login).Currency;
             }
@@ -41,7 +41,7 @@ namespace DefensiveProject.Pages
         private void DeleteAll()
         {
             user.DeleteBasket(user.Login);
-            UserAccount.ReplaceUser(new UserAccount(user.Login, user.Email, user.Password, user.Role, user.NumberPhone, user.busketUser));
+            UserAccount.ReplaceUser(new UserAccount(user.Login, user.Email, user.Password, user.Role, user.NumberPhone, user.busketUser, user.shoppingList));
             products = BasketUser.GetCart(user.Login).ListInCart;
             Currency = BasketUser.GetCart(user.Login).Currency;
             Message = "Ваша корзина пуста!";
@@ -59,6 +59,7 @@ namespace DefensiveProject.Pages
             products.Clear();
             Currency = 0;
         }
-
+       
+        
     }
 }

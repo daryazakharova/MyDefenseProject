@@ -100,6 +100,14 @@ namespace DefensiveProject.Data
             var collection = database.GetCollection<UnitOfGoods>("Clothes");
             collection.ReplaceOne(x => x.ArticleProduct == unitOfGoods.ArticleProduct, unitOfGoods);
         }
+        public  void UpdateQuantity(int article, int newquantity)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("DefensiveProject");
+            var collection = database.GetCollection<UnitOfGoods>("User");
+            var update = Builders<UnitOfGoods>.Update.Set(x => x.quantity, newquantity);
+            collection.UpdateOne(x => x.ArticleProduct == article, update);
+        }
         public static void UpdateSize104(int article, int balance)
         {
             var client = new MongoClient("mongodb://localhost");
