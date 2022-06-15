@@ -1,7 +1,7 @@
 ﻿@page "/catalogBoy"
 @using MongoDB.Driver
 @using System.Text.RegularExpressions
-@inject NavigationManager navManager
+
 <div class="row">
    <p><a href="">Главная страница</a>> Каталог мальчики</p>
 </div>
@@ -10,76 +10,102 @@
    @foreach (var item in  tShirtsLongsleeves) 
    {
       <div class="floating-box text-center"> 
-          <NavLink href="@item.ArticleProduct"><img class="icon hovered-icon " 
-           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))">          
-           </NavLink>
+          <img class="icon hovered-icon" @onclick="(()=>OpenModal(item.ArticleProduct))"
+           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))"> 
             <br />
             <label><i>@item.Name</i></label>
             <h6><i>@item.Price р.</i></h6>
       </div>  
    }
 </div>
+<br />
+@if (isModal)
+{
+    <div class="modal-backdrop show border-radius:25px;  border:2px solid black;"></div>
+    <div class="modal fade show" id="clothesModal" tabindex="-1" role="dialog"
+     aria-labelledby="clothesModal" aria-hidden="true" style="display:block">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">@product.Name</h3>
+                    <button @onclick="onCancel" type="button " class="close "><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col text-center">
+                            <img class="icon" src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(product.Photo))">
+                        </div>
+                        <div class="col-7 pt-2">
+                            <h6><i>Цена: @product.Price р.</i></h6>
+                            <h6><i>Артикул: @product.ArticleProduct</i></h6>
+                            <hr />
+                            <h6><i>Выберите размер:</i></h6>
+                            <button class="basket2"  @onclick="OnClick104">104</button>
+                            <button class="basket2"  @onclick="OnClick110">110</button>
+                            <button class="basket2"  @onclick="OnClick116">116</button>
+                            <button class="basket2"  @onclick="OnClick128">128</button>
+                            <h6><i>Описание: @product.Description</i></h6>
+                            <br />
+                            <label class="text-danger"><i>@Message</i></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="container signin ">
+                     <AuthorizeView>
+            <Authorized>
+               <button class="basket" @onclick="(()=>AddToBasket(product.ArticleProduct))"><i class="fa-solid fa-bucket"></i> В корзину</button> 
+            </Authorized>
+            <NotAuthorized>
+               <button class="basket" @onclick="OnClick"><i class="fa-solid fa-bucket"></i> В корзину</button> 
+            </NotAuthorized>
+        </AuthorizeView>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <h4><i>Шорты</i></h4>
 <div class="border-group">
    @foreach (var item in  shorts)
    {
       <div class="floating-box text-center"> 
-          <NavLink href="@item.ArticleProduct"><img class="icon hovered-icon " 
-           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))">          
-           </NavLink>
+          <img class="icon hovered-icon" @onclick="(()=>OpenModal(item.ArticleProduct))"
+           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))"> 
             <br />
             <label><i>@item.Name</i></label>
             <h6><i>@item.Price р.</i></h6>
       </div>  
    }
 </div>
+<br />
 <h4><i>Худи и толстовки</i></h4>
 <div class="border-group">
    @foreach (var item in  cardigansHoodies)
    {
       <div class="floating-box text-center"> 
-          <NavLink href="@item.ArticleProduct"><img class="icon hovered-icon " 
-           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))">          
-           </NavLink>
+           <img class="icon hovered-icon" @onclick="(()=>OpenModal(item.ArticleProduct))"
+           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))"> 
             <br />
             <label><i>@item.Name</i></label>
             <h6><i>@item.Price р.</i></h6>
       </div>  
    }
 </div>
+<br />
 <h4><i>Брюки и джинсы</i></h4>
 <div class="border-group">
    @foreach (var item in  trousersJeans)
    {
       <div class="floating-box text-center"> 
-          <NavLink href="@item.ArticleProduct"><img class="icon hovered-icon " 
-           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))">          
-           </NavLink>
+           <img class="icon hovered-icon" @onclick="(()=>OpenModal(item.ArticleProduct))"
+           src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))"> 
             <br />
             <label><i>@item.Name</i></label>
             <h6><i>@item.Price р.</i></h6>
       </div>  
    }
 </div>
+<br />
 
-@code {
-    private string Gender = "Мальчик";
-  
-    UnitOfGoods product = new UnitOfGoods();
-    public List<UnitOfGoods> products = new List<UnitOfGoods>();
-    public List<UnitOfGoods> tShirtsLongsleeves = new List<UnitOfGoods>();
-    public List<UnitOfGoods> shorts = new List<UnitOfGoods>();
-    public List<UnitOfGoods> trousersJeans = new List<UnitOfGoods>();
-    public List<UnitOfGoods> cardigansHoodies = new List<UnitOfGoods>();
-
-    protected override void OnInitialized()
-    {
-        products = UnitOfGoods.GetProductsInGender(Gender);
-        tShirtsLongsleeves = UnitOfGoods.ShowProductsInCategory(Gender, "Футболки и лонгсливы");
-        shorts = UnitOfGoods.ShowProductsInCategory(Gender,"Шорты");
-        cardigansHoodies = UnitOfGoods.ShowProductsInCategory(Gender,"Худи и толстовки");
-        trousersJeans = UnitOfGoods.ShowProductsInCategory(Gender,"Брюки и джинсы");
-        //url = $"{product.ArticleProduct}/";
-    }
-   
-}

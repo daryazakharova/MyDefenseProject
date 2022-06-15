@@ -1,23 +1,55 @@
 ﻿@page "/usAccount"
-@attribute [Authorize(Roles = "Client")] 
+@attribute [Authorize(Roles = "Client")]
 
-<h5>Личный кабинет</h5>
-<div class="form-group">
-    <label>Логин/Имя: </label>
-</div>
-<div class="form-group">
-    <label>E-mail:</label>
-    <input type="text" />
-</div>
-<div class="form-group">
-    <label>Номер телефона:</label>
-    <input type="text" />
-</div>
-<button >Сохранить изменения</button> 
-<NavLink href="basket"><button><i class="fa-solid fa-basket-shopping"></i> Корзина</button></NavLink>
-<NavLink href="userShopping"><button><i class="fa-solid fa-bag-shopping"></i> Покупки</button></NavLink>
+<AuthorizeView>
+    <Authorized>
+        <div class="row text-center">
+            <h4>Личный кабинет</h4>
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div class="floating-box">
+                    <div class="form-group">
+                        <label>E-mail: <i>@GetAuthorizedUser().GetAwaiter().GetResult().Email</i></label>
+                    </div>
+                    <div class="form-group">
+                        <label>Логин/Имя: <i>@GetAuthorizedUser().GetAwaiter().GetResult().Login</i> </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Номер телефона: <i>@GetAuthorizedUser().GetAwaiter().GetResult().NumberPhone</i></label>
+
+                        <div class="row">
+                            <input type="text" @bind-value="NumberPhone" placeholder="Изменить номер телефона" />
+
+                            <button class="registerbtn" @onclick="ReplasePhoneUser">Сохранить</button>
+                        </div>
+                    </div>
+                    <NavLink href="basket"><button class="registerbtn"><i class="fa-solid fa-basket-shopping"></i> Корзина</button></NavLink>
+                    <NavLink href="userShopping"><button class="registerbtn"><i class="fa-solid fa-bag-shopping"></i> Покупки</button></NavLink>
+                </div>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 @code {
-    
-   
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+    private string NumberPhone;
+    private string Login;
+
+
+    private async Task<UserAccount> GetAuthorizedUser()
+    {
+        var authState = await authenticationState;
+        string userName = authState.User.Identity.Name;
+        UserAccount authorizedUser = UserAccount.GetUserLogin(userName);
+        return authorizedUser;
+    }
+
+    private void ReplasePhoneUser()
+    {
+        UserAccount.ReplaceUserToDataBase(GetAuthorizedUser().GetAwaiter().GetResult().Email, new UserAccount(GetAuthorizedUser().GetAwaiter().GetResult().Login, GetAuthorizedUser().GetAwaiter().GetResult().Email, GetAuthorizedUser().GetAwaiter().GetResult().Password, GetAuthorizedUser().GetAwaiter().GetResult().Role, NumberPhone));
+    }
+
 }

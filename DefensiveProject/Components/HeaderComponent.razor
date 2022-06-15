@@ -6,7 +6,7 @@
     <div class="col text-center">
         <img src="./Images/hanger1.jpg" class="general-image " />
     </div>
-    <div class="col-9 pt-4 text-center">
+    <div class="col-8 pt-4 text-center">
         <AuthorizeView>
             <Authorized>
                 <h2> Здравствуй, @context.User.Identity.Name! </h2>
@@ -35,7 +35,7 @@
             <Authorized>
                 <NavLink href=""><button class="btn-top btn-lg"><i class="fa fa-bars"></i></button></NavLink>
                 <NavLink href="usAccount"> <button class="btn-top btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample"><i class="fa-solid fa-user"></i></button></NavLink>
-                <NavLink href="basket"><button class="btn-top btn-lg"><i class="fa-solid fa-bucket"></i></button></NavLink>
+                <NavLink href="basket"><button class="btn-top btn-lg"><i class="fa-solid fa-basket-shopping"></i></button></NavLink>
                 <button class="btn-top btn-lg" @onclick="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
             </Authorized>
         </AuthorizeView>
@@ -46,10 +46,11 @@
 
 
 @code {
-    private async Task Logout()
-    {
-        var customAuthStateProvider = (SettingAuthentication)authStateProvider;
-        await customAuthStateProvider.UpdateAuthenticationState(null);
-        navManager.NavigateTo("/", true);
-    }
+    [Parameter] public EventCallback Logout { get; set; }
+    //private async Task Logout()
+    //{
+    //    var customAuthStateProvider = (SettingAuthentication)authStateProvider;
+    //    await customAuthStateProvider.UpdateAuthenticationState(null);
+    //    navManager.NavigateTo("/", true);
+    //}
 }

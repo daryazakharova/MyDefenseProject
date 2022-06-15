@@ -1,67 +1,73 @@
 ﻿@page "/basket"
-@attribute [Authorize(Roles ="Client")]
-<div class="row">@Message
-    <a href="">Главная страница</a>
-</div>
-<h3>Basket</h3> 
-<div class="col-3 pt-4">
-   <h5><i>Корзина</i></h5> 
-   <button ><i class="fa-solid fa-right-from-bracket"></i>Очистить корзину</button>
-</div>
-<div class="col-9 pt-4">
-    <div class="floating-box">
-    <div class="col-3">
- <img class="icon" src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(product.Photo))">
-    </div>
-    <div class="col-3">
- <h5><i>@product.Name</i></h5>
- <h6><i>Артикул: @product.ArticleProduct</i></h6>
-    </div>
-     <div class="col-3">
- <h6><i>@product.Price р.</i></h6> 
-  <button ><i class="fa-solid fa-right-from-bracket"></i></button>
-   <div class="floating-box">
-         <button @onclick="OnClickMinus">-</button>
-       <label>@quantity</label>
-       <button @onclick="OnClickPlus">+</button>  
-       </div>
-    </div>
-</div>
-</div>
-<hr />
-<h5><i>Итого: </i></h5>
- <button class="buttonbasket">Оплатить заказ</button>
-
-@code {
-    private int ArticlePr;
-    private int quantity=1;
-    private string Message = string.Empty;
-    UnitOfGoods product = new UnitOfGoods();
-    public List<UnitOfGoods> products = new List<UnitOfGoods>();
-
-    protected override void OnInitialized()
-    {
-        if(products==null)
+@attribute [Authorize(Roles = "Client")]
+<a href="">Главная страница</a>> <a href="usAccount">Личный кабинет</a>> Корзина
+    <br />
+<AuthorizeView>
+    <Authorized>
+        @if (products == null)
         {
-            Message = "Ваша корзина пуста!";
+            <div class="row text-center">
+            <tr>
+                <td><h6>В корзине нет товаров!</h6></td>
+            </tr>
+            </div>
         }
-       // products = BasketUser.GetCart();
+        <div class="row pt-3">
+            <div class="col-3  text-center">
+                <h5><i>Корзина</i></h5>
+                <button class="buttonbasket" @onclick="DeleteAll"><i class="fa-solid fa-trash-can"></i> Очистить корзину</button>
+            </div>
 
-    }
-    private void OnClickMinus()
-    {
-        if (quantity==1)
+            <div class="col-7 pt-4 text-center">
+                @foreach (var item in products)
+                {
+                    <div class="floating-box">
+                        <div class="row">
+                            <div class="col-3">
+                                <img class="icon" src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))">
+                            </div>
+                            <div class="col-3 pt-4">
+                                <h5><i>@item.Name</i></h5>
+                                <h6><i>Артикул: @item.ArticleProduct</i></h6>
+                                <h6><i>Размер: @item.size</i></h6>
+                                 <h6><i>Размер: @item.quantity</i></h6>
+                                <h6><i>Цена: @item.Price р.</i></h6>
+                            </div>
+                            <div class="col-3 pt-4">
+                                @*<div class="floating-box2 text-center">
+                                    <button class="buttonbasket2" @onclick="(()=>OnClickMinus())">-</button>
+                                    <label>@item.quantity</label>
+                                    <button class="buttonbasket2" @onclick="OnClickPlus">+</button>
+                                </div>*@
+                            </div>
+                            <div class="col-3 pt-2 text-center">
+                                <br />
+                                <button class="buttonbasket" @onclick="(()=>DeleteOne(item.ArticleProduct))"><i class="fa-solid fa-trash-can"></i> Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-4 pt-4">
+            </div>
+        </div>
+        <hr />
+        <div class="row ">
+            <div class="col text-center">
+    <h5><i>Итого: @Currency p.</i></h5>
+            <button class="buttonbasket" @onclick="Buying">Оплатить заказ</button>
+            </div>
+        
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code{
+     protected override void OnInitialized()
         {
+            user = UserAccount.GetUserLogin(GetAuthorizedUser().GetAwaiter().GetResult().Login);
+            products = BasketUser.GetCart(GetAuthorizedUser().GetAwaiter().GetResult().Login).ListInCart;
+            Currency = BasketUser.GetCart(GetAuthorizedUser().GetAwaiter().GetResult().Login).Currency;
 
         }
-        quantity--;
-    }
-    private void OnClickPlus()
-    {
-        //if() если больше, чем наличии
-        //{
-            
-        //}
-        quantity++; 
-    }
 }

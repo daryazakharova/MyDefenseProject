@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
-
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
 
 <PageTitle>DefensiveProject</PageTitle>
 
@@ -12,7 +13,7 @@
                
         <div class="row border-bottom">
             
-           <HeaderComponent></HeaderComponent>
+           <HeaderComponent Logout="Logout2"></HeaderComponent>
            @* <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>*@
      
        </div>
@@ -24,5 +25,10 @@
 </div>
 
 @code{
-    
+        private async Task Logout2()
+    {
+        var customAuthStateProvider = (SettingAuthentication)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null);
+        navManager.NavigateTo("/", true);
+    }
 }

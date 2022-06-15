@@ -1,0 +1,28 @@
+﻿.buttonStyle {
+    background-color: #5eacee;
+    color: white;
+    padding: 6px 20px;
+    margin: 8px 0;
+    border-radius: 25px;
+    border: none;
+}
+
+    .buttonStyle:focus {
+        outline: none;
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+.edInput {
+    width: 53%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+    border-radius: 20px;
+}
+
+    .edInput:focus {
+        background-color: #ddd;
+        outline: none;
+    }

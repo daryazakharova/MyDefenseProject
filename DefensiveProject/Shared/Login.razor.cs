@@ -10,7 +10,7 @@ namespace DefensiveProject.Shared
 
         bool isLogin = false;
         string message = string.Empty;
-        private string NameLogin = string.Empty;
+        private string Email = string.Empty;
         private string Password = string.Empty;
         public void Show() => isLogin = true;
         public void Hide() => isLogin = false;
@@ -22,17 +22,17 @@ namespace DefensiveProject.Shared
         }
         private async Task Authenticate()
         {
-            var userAccount = UserAccount.Authorization(NameLogin, Password);
-            if (string.IsNullOrWhiteSpace(NameLogin) || string.IsNullOrWhiteSpace(Password))
+            var userAccount = UserAccount.Authorization(Email, Password);
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
                 message = "Пожалуйста, заполните все поля!";
-                NameLogin = string.Empty;
+                Email = string.Empty;
                 Password = string.Empty;
             }
             if (userAccount == null)
             {
                 message = "Неверный логин или пароль!";
-                NameLogin = string.Empty;
+                Email = string.Empty;
                 Password = string.Empty;
             }
             else

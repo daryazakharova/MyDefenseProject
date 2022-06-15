@@ -3,9 +3,10 @@
 @inject NavigationManager navManager
 
 
-@if(isRegistration)
+
+@if (isRegistration)
 {
-  <div class="modal-backdrop show border-radius:25px;  border: 2px solid black;"></div>
+    <div class="modal-backdrop show border-radius:25px;  border: 2px solid black;"></div>
     <div class="modal fade show" id="registModal" tabindex="-1" role="dialog"
      aria-labelledby="registModal" aria-hidden="true" style="display:block" action="">
         <div class="modal-dialog" role="document">
@@ -15,25 +16,31 @@
                     <button @onclick="onCancel" type="button" class="close"><span aria-hidden="true">🗙</span></button>
                 </div>
                 <div class="modal-body ">
-                    <p >Пожалуйста, заполните эту форму, чтобы создать учетную запись.</p>
-                   <EditForm Model="user" OnValidSubmit="Registrated">
+                    <p>Пожалуйста, заполните эту форму, чтобы создать учетную запись.</p>
+                    <EditForm Model="user" OnValidSubmit="Registrated">
                         <DataAnnotationsValidator />
                         <label for="login"><b>Login</b></label>
                         <InputText type="text" class="form-control" @bind-Value="user.Login" id="userLogin" placeholder="Введите имя/логин"></InputText>
                         <ValidationMessage For="()=>user.Login"></ValidationMessage>
-                       <label for="email"><b>E-mail</b></label>
+                        <tr>
+                            <td><h6 class="text-danger">@Message</h6></td>
+                        </tr>
+                        <label for="email"><b>E-mail</b></label>
                         <InputText type="email" class="form-control" @bind-Value="user.Email" id="email" placeholder="Введите e-mail"></InputText>
                         <ValidationMessage For="()=>user.Email"></ValidationMessage>
+                        <tr>
+                            <td><h6 class="text-danger">@Message2</h6></td>
+                        </tr>
                         <label for="psw"><b>Password</b></label>
                         <InputText type="password" class="form-control" @bind-Value="user.Password" id="psw" placeholder="Введите пароль"></InputText>
                         <ValidationMessage For="()=>user.Password"></ValidationMessage>
                         <hr>
-                    <button type="submit" class="registerbtn">Создать учетную запись</button>
+                        <button type="submit" class="registerbtn">Создать учетную запись</button>
                     </EditForm>
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 }
 
 

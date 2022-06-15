@@ -1,0 +1,51 @@
+﻿.floating-box {
+    border-radius: 25px;
+    border: 1px solid #c7c2c2;
+    text-align: left;
+    width: auto;
+    height: auto;
+    margin: 10px;
+    padding: 20px;
+}
+input::placeholder {
+    color: #808080;
+    font-size: 1em;
+}
+
+input[type=text] {
+    width: 70%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+    border-radius: 20px;
+}
+
+    input[type=text]:focus {
+        background-color: #ddd;
+        outline: none;
+    }
+
+.registerbtn {
+    background-color: #5eacee;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+    opacity: 0.9;
+    border-radius: 25px;
+}
+
+    .registerbtn:hover {
+        opacity: 1;
+    }
+
+    .registerbtn:focus {
+        outline: none;
+        transform: scale(1.1);
+        cursor: pointer;
+    }

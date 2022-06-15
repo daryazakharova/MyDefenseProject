@@ -120,29 +120,30 @@
         }
         else
         {
-        Name = product.Name;
-        Gender = product.Gender;
-        Category = product.Category;
-        Price = product.Price;
-        Description = product.Description;
-        size104 = product.Size104;
-        size110 = product.Size110;
-        size116 = product.Size116;
-        size128 = product.Size128;
-        imgSrc = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(product.Photo));  
+            Name = product.Name;
+            Gender = product.Gender;
+            Category = product.Category;
+            Price = product.Price;
+            Description = product.Description;
+            size104 = product.Size104;
+            size110 = product.Size110;
+            size116 = product.Size116;
+            size128 = product.Size128;
+            img = product.Photo;
+            imgSrc = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(product.Photo));
         }
     }
 
     private void Save()
     {
-        UnitOfGoods.ReplaceToDataBase(ArticlePr, new UnitOfGoods(ArticlePr, Name, Gender, Category, Price, size104, size110, size116, size128, img, Description));
+       
+        UnitOfGoods.ReplaceToDataBase(new UnitOfGoods(ArticlePr, Name, Gender, Category, Price, size104, size110, size116, size128, img, Description));
         Message = "Товар успешно изменен!";
          if (ArticlePr == 0)
         {
             Message = "Введите артикул товара!";
         }
         Clear();
-
     }
     private void Clear()
     {

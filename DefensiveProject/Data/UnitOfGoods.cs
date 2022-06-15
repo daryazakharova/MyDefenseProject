@@ -8,14 +8,14 @@ namespace DefensiveProject.Data
     public class UnitOfGoods
     {
         public int size;//размер в корзине
-        public int quantity; //количество в корзине
+        public int quantity=1; //количество в корзине
 
         public UnitOfGoods()
         {
         }
 
         public UnitOfGoods(int articleProduct,string name, string gender, string category, int price, byte[] photo, string description) 
-        { //для добавления в корзину
+        { 
             ArticleProduct = articleProduct;
             Name = name;
             Gender = gender;
@@ -26,7 +26,7 @@ namespace DefensiveProject.Data
         }
 
         public UnitOfGoods(int articleProduct,string name, string gender, string category, int price, int size104, int size110, int size116, int size128, byte[] photo, string description )
-        {
+        {//для добавления в бд товара, для каталога
             ArticleProduct = articleProduct;
             Name = name;
             Gender = gender;
@@ -41,7 +41,7 @@ namespace DefensiveProject.Data
         }
 
         public UnitOfGoods(string name, int price, int articleProduct, int size, int quantity)
-        {
+        { //для добавления в корзину
             Name = name;
             Price = price;
             ArticleProduct = articleProduct;
@@ -84,37 +84,54 @@ namespace DefensiveProject.Data
             var database = client.GetDatabase("DefensiveProject");
             var collection = database.GetCollection<UnitOfGoods>("Clothes");
             return collection.Find(x => true).ToList();
-
         }
         public static UnitOfGoods GetArticleClothes(int article)
         {
             MongoClient client = new MongoClient("mongodb://localhost");
             var database = client.GetDatabase("DefensiveProject");
             var collection = database.GetCollection<UnitOfGoods>("Clothes");
-            if (collection == null)
-            {
-                //сделать обработку 0
-            }
             return collection.Find(x => x.ArticleProduct == article).FirstOrDefault();
         }
-       
-        //public static void EditingMongoDB(string name, string gender, UnitOfGoods unitOfGoods)
-        //{
-        //    MongoClient client = new MongoClient("mongodb://localhost");
-        //    var database = client.GetDatabase("DefensiveProject");
-        //    var collection = database.GetCollection<UnitOfGoods>("Clothes");
-           
-        //    collection.ReplaceOne(x => x.Name == name && x.Gender == gender, unitOfGoods);
-           
-        //}
-        public static void ReplaceToDataBase(int article, UnitOfGoods unitOfGoods)
+              
+        public static void ReplaceToDataBase(UnitOfGoods unitOfGoods)
         {
             var client = new MongoClient("mongodb://localhost");
             var database = client.GetDatabase("DefensiveProject");
             var collection = database.GetCollection<UnitOfGoods>("Clothes");
-            collection.ReplaceOne(x => x.ArticleProduct == article, unitOfGoods);
+            collection.ReplaceOne(x => x.ArticleProduct == unitOfGoods.ArticleProduct, unitOfGoods);
         }
-        
+        public static void UpdateSize104(int article, int balance)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("DefensiveProject");
+            var collection = database.GetCollection<UnitOfGoods>("Clothes");
+            var update = Builders<UnitOfGoods>.Update.Set(x => x.Size104, balance);
+            collection.UpdateOne(x => x.ArticleProduct == article, update);
+        }
+        public static void UpdateSize110(int article, int balance)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("DefensiveProject");
+            var collection = database.GetCollection<UnitOfGoods>("Clothes");
+            var update = Builders<UnitOfGoods>.Update.Set(x => x.Size110, balance);
+            collection.UpdateOne(x => x.ArticleProduct == article, update);
+        }
+        public static void UpdateSize116(int article, int balance)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("DefensiveProject");
+            var collection = database.GetCollection<UnitOfGoods>("Clothes");
+            var update = Builders<UnitOfGoods>.Update.Set(x => x.Size116, balance);
+            collection.UpdateOne(x => x.ArticleProduct == article, update);
+        }
+        public static void UpdateSize128(int article, int balance)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("DefensiveProject");
+            var collection = database.GetCollection<UnitOfGoods>("Clothes");
+            var update = Builders<UnitOfGoods>.Update.Set(x => x.Size110, balance);
+            collection.UpdateOne(x => x.ArticleProduct == article, update);
+        }
         public static void DeletingMongoDB(int article)
         {
             MongoClient client = new MongoClient("mongodb://localhost");
@@ -135,6 +152,13 @@ namespace DefensiveProject.Data
             var database = client.GetDatabase("DefensiveProject");
             var collection = database.GetCollection<UnitOfGoods>("Clothes");
             return collection.Find(x => x.Gender == gender && x.Category == category).ToList();
+        }
+        public static List<UnitOfGoods> ShowProductsInCategory(string category)
+        {
+            var client = new MongoClient("mongodb://localhost");
+            var database = client.GetDatabase("DefensiveProject");
+            var collection = database.GetCollection<UnitOfGoods>("Clothes");
+            return collection.Find(x => x.Category == category).ToList();
         }
 
 

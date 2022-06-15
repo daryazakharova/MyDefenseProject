@@ -1,7 +1,52 @@
 ﻿@page "/userShopping"
-@attribute [Authorize(Roles ="Client")]
-<h3>UserShoppingList</h3>
+@attribute [Authorize(Roles = "Client")]
+
+<a href="">Главная страница</a>> <a href="usAccount">Личный кабинет</a>> Список покупок
+<br />
+<br />
+<AuthorizeView>
+    <Authorized>
+        <td><h6>Список покупок </h6></td>
+        @if (shoppingList == null)
+        {
+            <td><h6>Список покупок пуст!</h6></td>
+        }
+        <div class="border-group">
+            @foreach (var item in shoppingList)
+            {
+                <div class="floating-box text-center">
+                    <img class="icon hovered-icon"
+                     src="@String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(item.Photo))">
+                    <br />
+                    <h6><i>@item.Name.</i></h6>
+                    <h6><i>Артикул: @item.ArticleProduct</i></h6>
+                    <h6><i>Размер: @item.size</i></h6>
+                    <h6><i>Размер: @item.quantity</i></h6>
+                    <h6><i>Цена: @item.Price р.</i></h6>
+                </div>
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
 
+    UnitOfGoods product = new UnitOfGoods();
+    public List<UnitOfGoods> shoppingList = new List<UnitOfGoods>();
+    UserAccount user = new UserAccount();
+
+    protected override void OnInitialized()
+    {
+        user = UserAccount.GetUserLogin(GetAuthorizedUser().GetAwaiter().GetResult().Login);
+        shoppingList = ShoppingList.GetShoppingList(GetAuthorizedUser().GetAwaiter().GetResult().Login).shoppingList;
+    }
+    private async Task<UserAccount> GetAuthorizedUser()
+    {
+        var authState = await authenticationState;
+        string userName = authState.User.Identity.Name;
+        UserAccount authorizedUser = UserAccount.GetUserLogin(userName);
+        return authorizedUser;
+    }
 }
